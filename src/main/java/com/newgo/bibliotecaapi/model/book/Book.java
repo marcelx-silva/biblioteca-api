@@ -2,13 +2,14 @@ package com.newgo.bibliotecaapi.model.book;
 
 import com.newgo.bibliotecaapi.model.author.Author;
 import com.newgo.bibliotecaapi.model.baseentity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Getter
@@ -30,4 +31,9 @@ public class Book extends BaseEntity {
     @Column(name = "isbn_13")
     private String isbn13;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "authors_books",
+            joinColumns = {@JoinColumn(name="fk_book_id")},
+            inverseJoinColumns = {@JoinColumn(name = "fk_author_id")})
+    private Set<Author> authorSet = new HashSet<>();
 }
