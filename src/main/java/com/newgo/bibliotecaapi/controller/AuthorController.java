@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -51,5 +52,17 @@ public class AuthorController {
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Author does not exist!");
+    }
+
+    @PutMapping("/id/{id}")
+    ResponseEntity<Object> updateAuthor(@PathVariable("id") UUID authorID,@RequestBody @Valid AuthorDTO authorDTO){
+        Optional<Author> authorOptional = authorService.findById(authorID);
+        if (authorOptional.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Author does not exist!");
+
+        Author author = new Author();
+        BeanUtils.copyProperties(authorDTO,author);
+        author.setId(authorOptional.get().getId());
+        return ResponseEntity.status(HttpStatus.OK).body(this.authorService.save(author));
     }
 }
