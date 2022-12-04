@@ -10,5 +10,6 @@ public interface AuthorService {
     Author save(Author author);
     Optional<Author> findById(UUID id);
     Set<Author> findAll();
+    boolean existsById(UUID id);
     void deleteById(UUID id);
 }
