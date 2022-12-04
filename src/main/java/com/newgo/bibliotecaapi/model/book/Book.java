@@ -1,5 +1,6 @@
 package com.newgo.bibliotecaapi.model.book;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.newgo.bibliotecaapi.model.author.Author;
 import com.newgo.bibliotecaapi.model.baseentity.BaseEntity;
 import jakarta.persistence.*;
@@ -30,7 +31,7 @@ public class Book extends BaseEntity {
     private Integer pages;
     @Column(name = "isbn_13")
     private String isbn13;
-
+    @JsonBackReference(value = "authors_id")
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "authors_books",
             joinColumns = {@JoinColumn(name="fk_book_id")},

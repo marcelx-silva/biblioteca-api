@@ -1,11 +1,9 @@
 package com.newgo.bibliotecaapi.model.author;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.newgo.bibliotecaapi.model.baseentity.BaseEntity;
 import com.newgo.bibliotecaapi.model.book.Book;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,6 +34,7 @@ public class Author extends BaseEntity {
     private String name;
     @Column(name = "birth_date")
     private LocalDate birthDate;
+    @JsonManagedReference(value = "authors")
     @ManyToMany(mappedBy="authorSet")
     private Set<Book> bookSet = new HashSet<>();
 }
