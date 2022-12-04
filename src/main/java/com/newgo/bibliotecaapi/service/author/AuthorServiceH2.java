@@ -40,6 +40,11 @@ public class AuthorServiceH2 implements AuthorService {
     }
 
     @Override
+    public boolean existsById(UUID id) {
+        return this.authorRepository.existsById(id);
+    }
+
+    @Override
     @Transactional
     public void deleteById(UUID id) {
         this.authorRepository.deleteById(id);
