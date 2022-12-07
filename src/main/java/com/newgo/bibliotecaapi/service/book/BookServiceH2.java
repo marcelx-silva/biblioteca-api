@@ -1,8 +1,6 @@
 package com.newgo.bibliotecaapi.service.book;
 
-import com.newgo.bibliotecaapi.dto.BookDTO;
 import com.newgo.bibliotecaapi.model.author.Author;
-import com.newgo.bibliotecaapi.model.baseentity.BaseEntity;
 import com.newgo.bibliotecaapi.model.book.Book;
 import com.newgo.bibliotecaapi.repository.BookRepository;
 import com.newgo.bibliotecaapi.service.author.AuthorService;
@@ -10,7 +8,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Profile("dev")
 @Service
@@ -27,7 +24,6 @@ public class BookServiceH2 implements BookService{
     public Book save(Book book) {
         if(book.getAuthorSet().stream().allMatch(author ->  this.authorService.existsById(author.getId())) &&
                 book.getAuthorSet().size() > 0){
-            System.out.println(book.getAuthorSet());
           return this.bookRepository.save(book);
         }
         return null;

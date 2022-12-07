@@ -1,9 +1,7 @@
 package com.newgo.bibliotecaapi.service.book;
 
-import com.newgo.bibliotecaapi.dto.BookDTO;
 import com.newgo.bibliotecaapi.model.book.Book;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 

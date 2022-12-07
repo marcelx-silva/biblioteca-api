@@ -1,14 +1,11 @@
 package com.newgo.bibliotecaapi.mapper.book;
 
 import com.newgo.bibliotecaapi.dto.BookDTO;
-import com.newgo.bibliotecaapi.model.author.Author;
 import com.newgo.bibliotecaapi.model.baseentity.BaseEntity;
 import com.newgo.bibliotecaapi.model.book.Book;
 import com.newgo.bibliotecaapi.service.author.AuthorService;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Configuration

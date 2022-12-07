@@ -6,10 +6,8 @@ import com.newgo.bibliotecaapi.model.author.Author;
 import com.newgo.bibliotecaapi.model.book.Book;
 import com.newgo.bibliotecaapi.service.author.AuthorService;
 import com.newgo.bibliotecaapi.service.book.BookService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
