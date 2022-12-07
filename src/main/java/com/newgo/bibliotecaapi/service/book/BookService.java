@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface BookService {
     Book save(Book book);
-    Optional<Book> findById(UUID id);
+    Book findById(UUID id);
     Set<Book> findAll();
     void deleteById(UUID id);
     Set<Book> findBooksByAuthorId(UUID id);
