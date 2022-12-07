@@ -78,5 +78,18 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.OK).body(bookMapper.bookToBookDTO(book));
     }
 
+    @DeleteMapping("id/{id}")
+    ResponseEntity<Object> deleteBook(@PathVariable("id") UUID bookId){
+        Book bookFromDatabase = this.bookService.findById(bookId);
+        BookDTO bookDTO = this.bookMapper.bookToBookDTO(bookFromDatabase);
+        if ( bookFromDatabase == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book does not exist!");
+        }
+        this.bookService.deleteById(bookId);
+        return ResponseEntity.status(HttpStatus.OK).body(bookDTO);
+
+    }
+
+
 
 }
