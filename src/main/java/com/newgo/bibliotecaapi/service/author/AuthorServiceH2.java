@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -28,8 +27,8 @@ public class AuthorServiceH2 implements AuthorService {
     }
 
     @Override
-    public Optional<Author> findById(UUID id) {
-        return this.authorRepository.findById(id);
+    public Author findById(UUID id) {
+        return this.authorRepository.findAuthorById(id);
     }
 
     @Override
@@ -48,5 +47,10 @@ public class AuthorServiceH2 implements AuthorService {
     @Transactional
     public void deleteById(UUID id) {
         this.authorRepository.deleteById(id);
+    }
+
+    @Override
+    public Author findAuthorByName(String name) {
+      return this.authorRepository.findAuthorByName(name);
     }
 }
