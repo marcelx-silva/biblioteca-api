@@ -29,7 +29,7 @@ public class Book extends BaseEntity {
     private String language;
     @Column(name = "pages")
     private Integer pages;
-    @Column(name = "isbn_13")
+    @Column(name = "isbn_13", unique = true)
     private String isbn13;
     @JsonBackReference(value = "authors_id")
     @ManyToMany(fetch = FetchType.EAGER)

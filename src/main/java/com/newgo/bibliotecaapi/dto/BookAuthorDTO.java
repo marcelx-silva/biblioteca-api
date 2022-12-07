@@ -7,19 +7,17 @@ import lombok.Setter;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Past;
-import java.time.LocalDate;
-import java.util.Set;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthorDTO {
-    @NotBlank(message = "authors name should not be null")
+public class BookAuthorDTO {
+    @NotBlank
     @Min(value = 10)
-    private String name;
-    @Past
-    private LocalDate birthDate;
-    private Set<BookAuthorDTO> books;
+    private String title;
+    @NotBlank
+    private String genre;
+    @NotBlank
+    private String isbn13;
 }

@@ -1,6 +1,7 @@
 package com.newgo.bibliotecaapi.controller;
 
 import com.newgo.bibliotecaapi.dto.AuthorDTO;
+import com.newgo.bibliotecaapi.mapper.author.AuthorMapper;
 import com.newgo.bibliotecaapi.model.author.Author;
 import com.newgo.bibliotecaapi.service.author.AuthorService;
 import org.springframework.beans.BeanUtils;
@@ -9,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -17,9 +17,11 @@ import java.util.UUID;
 public class AuthorController {
 
     private final AuthorService authorService;
+    private final AuthorMapper authorMapper;
 
-    public AuthorController(AuthorService authorService) {
+    public AuthorController(AuthorService authorService, AuthorMapper authorMapper) {
         this.authorService = authorService;
+        this.authorMapper = authorMapper;
     }
 
     @PostMapping
@@ -31,38 +33,47 @@ public class AuthorController {
 
     @GetMapping
     ResponseEntity<Object> getAllAuthors(){
-        return ResponseEntity.status(HttpStatus.OK).body(authorService.findAll());
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(authorService.findAll().stream()
+                        .map(this.authorMapper::authorToAuthorDto));
     }
 
     @GetMapping("id/{id}")
     ResponseEntity<Object> getAuthorById(@PathVariable("id") UUID authorID){
-        Optional<Author> authorOptional = authorService.findById(authorID);
-        if (authorOptional.isPresent())
-            return ResponseEntity.status(HttpStatus.OK).body(authorOptional);
+        Author author = authorService.findById(authorID);
+        AuthorDTO authorDTO = authorMapper.authorToAuthorDto(author);
+
+        if (authorDTO!=null)
+            return ResponseEntity.status(HttpStatus.OK).body(authorDTO);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Author does not exist!");
     }
 
     @DeleteMapping("id/{id}")
     ResponseEntity<Object> deleteAuthorById(@PathVariable("id") UUID authorID){
-        Optional<Author> authorOptional = authorService.findById(authorID);
-        if (authorOptional.isPresent()){
-            authorService.deleteById(authorID);
-            return ResponseEntity.status(HttpStatus.OK).body(authorOptional);
-        }
+        Author author = authorService.findById(authorID);
+        AuthorDTO authorDTO = authorMapper.authorToAuthorDto(author);
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Author does not exist!");
+        if (authorDTO==null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Author does not exist!");
+
+
+        authorService.deleteById(authorID);
+        return ResponseEntity.status(HttpStatus.OK).body(authorDTO);
+
     }
 
     @PutMapping("/id/{id}")
     ResponseEntity<Object> updateAuthor(@PathVariable("id") UUID authorID,@RequestBody @Valid AuthorDTO authorDTO){
-        Optional<Author> authorOptional = authorService.findById(authorID);
-        if (authorOptional.isEmpty())
+        Author author = authorService.findById(authorID);
+
+        if (author == null)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Author does not exist!");
 
-        Author author = new Author();
+        author = new Author();
         BeanUtils.copyProperties(authorDTO,author);
-        author.setId(authorOptional.get().getId());
-        return ResponseEntity.status(HttpStatus.OK).body(this.authorService.save(author));
+        author.setId(authorID);
+        authorService.save(author);
+        return ResponseEntity.status(HttpStatus.OK).body(authorMapper.authorToAuthorDto(author));
     }
 }
