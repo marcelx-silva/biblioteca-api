@@ -1,6 +1,7 @@
 package com.newgo.bibliotecaapi.controller;
 
 import com.newgo.bibliotecaapi.dto.BookDTO;
+import com.newgo.bibliotecaapi.exceptions.BookNotFoundException;
 import com.newgo.bibliotecaapi.mapper.book.BookMapper;
 import com.newgo.bibliotecaapi.model.author.Author;
 import com.newgo.bibliotecaapi.model.book.Book;
@@ -41,7 +42,7 @@ public class BookController {
         Book book = this.bookService.findById(bookID);
         BookDTO bookDTO = this.bookMapper.bookToBookDTO(book);
         if (bookDTO == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book does not exist!");
+            throw new BookNotFoundException();
         }
         return ResponseEntity.status(HttpStatus.FOUND).body(bookDTO);
 
@@ -51,7 +52,7 @@ public class BookController {
     ResponseEntity<Object> getBooksByAuthorId(@PathVariable("id") UUID authorID){
        Author author = this.authorService.findById(authorID);
         if (author == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Author does not exist!");
+            throw new BookNotFoundException();
         }
         Set<BookDTO> bookSet = new HashSet<>();
         this.bookService.findBooksByAuthorId(author.getId())
@@ -70,7 +71,7 @@ public class BookController {
     ResponseEntity<Object> updateBook(@RequestBody @Valid BookDTO bookDTO,@PathVariable("id") UUID bookId){
         Book bookFromDatabase = this.bookService.findById(bookId);
         if ( bookFromDatabase == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book does not exist!");
+            throw new BookNotFoundException();
         }
         Book book = bookMapper.bookDtoToBook(bookDTO);
         book.setId(bookFromDatabase.getId());
@@ -83,7 +84,7 @@ public class BookController {
         Book bookFromDatabase = this.bookService.findById(bookId);
         BookDTO bookDTO = this.bookMapper.bookToBookDTO(bookFromDatabase);
         if ( bookFromDatabase == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book does not exist!");
+            throw new BookNotFoundException();
         }
         this.bookService.deleteById(bookId);
         return ResponseEntity.status(HttpStatus.OK).body(bookDTO);

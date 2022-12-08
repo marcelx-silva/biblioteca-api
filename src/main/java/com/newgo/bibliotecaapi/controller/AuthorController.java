@@ -1,6 +1,7 @@
 package com.newgo.bibliotecaapi.controller;
 
 import com.newgo.bibliotecaapi.dto.AuthorDTO;
+import com.newgo.bibliotecaapi.exceptions.BookNotFoundException;
 import com.newgo.bibliotecaapi.mapper.author.AuthorMapper;
 import com.newgo.bibliotecaapi.model.author.Author;
 import com.newgo.bibliotecaapi.service.author.AuthorService;
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/author")
+@CrossOrigin
 public class AuthorController {
 
     private final AuthorService authorService;
@@ -46,7 +48,7 @@ public class AuthorController {
         if (authorDTO!=null)
             return ResponseEntity.status(HttpStatus.OK).body(authorDTO);
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Author does not exist!");
+        throw new BookNotFoundException();
     }
 
     @DeleteMapping("id/{id}")
@@ -55,7 +57,7 @@ public class AuthorController {
         AuthorDTO authorDTO = authorMapper.authorToAuthorDto(author);
 
         if (authorDTO==null)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Author does not exist!");
+            throw new BookNotFoundException();
 
 
         authorService.deleteById(authorID);
@@ -68,7 +70,7 @@ public class AuthorController {
         Author author = authorService.findById(authorID);
 
         if (author == null)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Author does not exist!");
+            throw new BookNotFoundException();
 
         author = new Author();
         BeanUtils.copyProperties(authorDTO,author);
