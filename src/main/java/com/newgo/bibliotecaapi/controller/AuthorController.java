@@ -26,14 +26,14 @@ public class AuthorController {
         this.authorMapper = authorMapper;
     }
 
-    @PostMapping
+    @PostMapping("signup/")
     ResponseEntity<Object> saveAuthor(@RequestBody AuthorDTO authorDTO){
         Author author = new Author();
         BeanUtils.copyProperties(authorDTO,author);
         return ResponseEntity.status(HttpStatus.CREATED).body(this.authorService.save(author));
     }
 
-    @GetMapping
+    @GetMapping("all/")
     ResponseEntity<Object> getAllAuthors(){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(authorService.findAll().stream()

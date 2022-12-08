@@ -30,7 +30,7 @@ public class BookController {
         this.bookMapper = bookMapper;
     }
 
-    @GetMapping
+    @GetMapping("all/")
     ResponseEntity<Object> getAllBooks(){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(this.bookService.findAll().stream()
@@ -60,7 +60,7 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.FOUND).body(bookSet);
     }
 
-    @PostMapping
+    @PostMapping("signup/")
     ResponseEntity<Object> saveBook(@RequestBody @Valid BookDTO bookDTO){
         Book book = this.bookMapper.bookDtoToBook(bookDTO);
         this.bookService.save(book);
