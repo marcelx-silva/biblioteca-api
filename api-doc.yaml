@@ -1,0 +1,388 @@
+openapi: 3.0.3
+info:
+  title: Library API - OpenAPI 3.0
+  description: Documentação da API de Biblioteca
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: http://localhost:8080/v3/api-docs/
+tags:
+  - name: author
+    description: Acess to authors
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+  - name: book
+    description: Access to books from library
+    externalDocs:
+      description: Find out more about our store
+      url: http://swagger.io
+paths:
+  /author/signup:
+    post:
+      tags:
+        - author
+      summary: Add a new author
+      description: Add a new author to the library
+      operationId: saveAuthor
+      requestBody:
+        description: Create a new author
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorPOST'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorPOST'
+        '405':
+          description: Invalid input
+  /author/all:
+    get:
+      tags:
+        - author
+      summary: Get all authors
+      description: Get all authors from library
+      operationId: getAllAuthors
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+  /author/{authorId}:
+    get:
+      tags:
+        - author
+      summary: Find an author by Id
+      description: Returns a single author
+      operationId: getAuthorById
+      parameters:
+        - name: authorId
+          in: path
+          description: ID of author to return
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '404':
+          description: No such author found
+    put:
+      tags:
+        - author
+      summary: Updates an Author in the store with form data
+      description: ''
+      operationId: updateAuthor
+      requestBody:
+        description: Update an existing author
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorPOST'
+        required: true
+      parameters:
+        - name: authorId
+          in: path
+          description: ID of Author that needs to be updated
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorCreated'
+        '404':
+          description: No such author found
+    delete:
+      tags:
+        - author
+      summary: Deletes an author
+      description: delete an author by id
+      operationId: deleteAuthorById
+      parameters:
+        - name: authorId
+          in: path
+          description: Author id to delete
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorCreated'
+        '404':
+          description: No such author found
+  /book/all:
+    get:
+      tags:
+        - book
+      summary: Get all books
+      description: Get all books from library
+      operationId: getAllBooks
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+  /book/signup:
+    post:
+      tags:
+        - book
+      summary: Create a book
+      description: Create a new book with an existing author
+      operationId: saveBook
+      requestBody:
+        description: Create a new book
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookCreated'
+        '404':
+          description: No such author found
+  /book/id/{bookId}:
+    get:
+      tags:
+        - book
+      summary: Get a book by id
+      description: get one book
+      operationId: getBookByID
+      parameters:
+        - name: bookId
+          in: path
+          description: Book id to get one
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: No such book found
+    put:
+      tags:
+        - book
+      summary: Update a book by id
+      description: update one by id
+      operationId: updateBook
+      requestBody:
+        description: Update an existing book
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      parameters:
+        - name: bookId
+          in: path
+          description: Book id to update it
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: No such book found
+    delete:
+      tags:
+        - book
+      summary: Delete a book by id
+      description: delete one book
+      operationId: deleteBookById
+      parameters:
+        - name: bookId
+          in: path
+          description: Book id to delete it
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: No such book found
+  /book/author/{authorId}:
+    get:
+      tags:
+        - book
+      summary: Get all books by author id
+      description: get all books from an author
+      operationId: getBooksByAuthorId
+      parameters:
+        - name: authorId
+          in: path
+          description: Author id to get all books from it
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayBooks'
+        '404':
+          description: No such Author found
+components:
+  schemas:
+    Author:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Joaquim Maria Machado de Assis
+        birthDate:
+          type: string
+          format: date
+          example: 1839-6-21
+        books:
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/AuthorBookGET'
+    AuthorCreated:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Joaquim Maria Machado de Assis
+        birthDate:
+          type: string
+          format: date
+          example: 1839-6-21
+    Book:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Memórias póstumas de Brás Cubas
+        genre:
+          type: string
+          example: Drama
+        publisher:
+          type: string
+          example: Panda Books
+        language:
+          type: string
+          example: Portugês
+        pages:
+          type: integer
+          format: int64
+          example: 356
+        isbn13:
+          type: string
+          example: 978-8578886929
+        authors:
+          type: array
+          items:
+            type: string
+            format: uuid
+    AuthorBookGET:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Memórias póstumas de Brás Cubas
+        genre:
+          type: string
+          example: Drama
+        isbn13:
+          type: string
+          example: 978-8578886929
+    AuthorPOST:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Memórias póstumas de Brás Cubas
+        birthDate:
+          type: string
+          format: date
+          example: 1839-6-21
+    BookCreated:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+          example: Memórias póstumas de Brás Cubas
+        genre:
+          type: string
+          example: Drama
+        publisher:
+          type: string
+          example: Panda Books
+        language:
+          type: string
+          example: Portugês
+        pages:
+          type: integer
+          format: int64
+          example: 356
+        isbn13:
+          type: string
+          example: 978-8578886929
+    ArrayBooks:
+      type: object
+      properties:
+        books:
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/Book'
+
