@@ -1,6 +1,7 @@
 package com.newgo.bibliotecaapi.controller;
 
 import com.newgo.bibliotecaapi.dto.BookDTO;
+import com.newgo.bibliotecaapi.exceptions.AuthorNotFoundException;
 import com.newgo.bibliotecaapi.exceptions.BookNotFoundException;
 import com.newgo.bibliotecaapi.mapper.book.BookMapper;
 import com.newgo.bibliotecaapi.model.author.Author;
@@ -18,6 +19,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/book")
+@CrossOrigin
 public class BookController {
 
     private final BookService bookService;
@@ -52,7 +54,7 @@ public class BookController {
     ResponseEntity<Object> getBooksByAuthorId(@PathVariable("id") UUID authorID){
        Author author = this.authorService.findById(authorID);
         if (author == null){
-            throw new BookNotFoundException();
+            throw new AuthorNotFoundException();
         }
         Set<BookDTO> bookSet = new HashSet<>();
         this.bookService.findBooksByAuthorId(author.getId())

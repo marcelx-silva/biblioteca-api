@@ -44,9 +44,6 @@ public class BoostrapData implements CommandLineRunner {
         this.authorService.save(author);
         author = new Author("Yoshitoki Oima",LocalDate.of(1989,3,15));
         this.authorService.save(author);
-        System.out.println(this.authorService.findAuthorByName("Junji Ito").getId());
-        System.out.println(this.authorService.findAuthorByName("Yoshiyuki Sadamoto").getId());
-        System.out.println(this.authorService.findAuthorByName("Yoshitoki Oima").getId());
     }
 
 
@@ -67,12 +64,9 @@ public class BoostrapData implements CommandLineRunner {
         this.bookService.save(book);
         book = new Book("A Voz do Silêncio (Edição Definitiva) – Volume 2","Drama","NewPOP","Português",392,"978-6586799002",authors);
         this.bookService.save(book);
-        book = new Book("A Voz do Silêncio (Edição Definitiva) – Volume 3 ","Drama","NewPOP","Português",392,"978-6586799019",authors);
+        book = new Book("A Voz do Silêncio (Edição Definitiva) – Volume 3","Drama","NewPOP","Português",392,"978-6586799019",authors);
         this.bookService.save(book);
-
-
     }
-
 
     @Override
     public void run(String... args) throws Exception {

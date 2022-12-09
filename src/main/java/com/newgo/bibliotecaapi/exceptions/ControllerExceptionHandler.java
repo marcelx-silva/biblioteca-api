@@ -15,4 +15,10 @@ public class ControllerExceptionHandler {
             return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(value = {AuthorAlreadyExistsException.class, BookAlreadyExistsException.class})
+    public ResponseEntity<ErrorMessage> resourceAlreadyExists(Exception exception){
+        ErrorMessage errorMessage = new ErrorMessage(HttpStatus.CONFLICT,exception.getMessage(),new Date());
+        return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
+    }
+
 }

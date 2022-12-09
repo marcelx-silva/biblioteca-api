@@ -1,6 +1,7 @@
 package com.newgo.bibliotecaapi.mapper.book;
 
 import com.newgo.bibliotecaapi.dto.BookDTO;
+import com.newgo.bibliotecaapi.model.author.Author;
 import com.newgo.bibliotecaapi.model.baseentity.BaseEntity;
 import com.newgo.bibliotecaapi.model.book.Book;
 import com.newgo.bibliotecaapi.service.author.AuthorService;
@@ -31,7 +32,7 @@ public class BookMapperImpl implements BookMapper{
         bookDTO.setIsbn13(book.getIsbn13());
         bookDTO.setAuthors(book.getAuthorSet()
                 .stream()
-                .map(BaseEntity::getId)
+                .map(Author::getName)
                 .collect(Collectors.toSet()));
 
         return bookDTO;
@@ -51,7 +52,7 @@ public class BookMapperImpl implements BookMapper{
         book.setIsbn13(bookDTO.getIsbn13());
         book.setAuthorSet(bookDTO.getAuthors()
                 .stream()
-                .map(authorService::findById)
+                .map(authorService::findAuthorByName)
                 .collect(Collectors.toSet()));
 
         return book;

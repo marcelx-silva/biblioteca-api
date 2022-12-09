@@ -12,4 +12,5 @@ public interface AuthorService {
     boolean existsById(UUID id);
     void deleteById(UUID id);
     Author findAuthorByName(String name);
+    boolean existsAuthorByName(String name);
 }

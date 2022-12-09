@@ -1,5 +1,6 @@
 package com.newgo.bibliotecaapi.service.author;
 
+import com.newgo.bibliotecaapi.exceptions.AuthorAlreadyExistsException;
 import com.newgo.bibliotecaapi.model.author.Author;
 import com.newgo.bibliotecaapi.repository.AuthorRepository;
 import jakarta.transaction.Transactional;
@@ -23,6 +24,9 @@ public class AuthorServiceH2 implements AuthorService {
     @Override
     @Transactional
     public Author save(Author author) {
+        if (existsAuthorByName(author.getName())){
+            throw new AuthorAlreadyExistsException();
+        }
         return this.authorRepository.save(author);
     }
 
@@ -52,5 +56,10 @@ public class AuthorServiceH2 implements AuthorService {
     @Override
     public Author findAuthorByName(String name) {
       return this.authorRepository.findAuthorByName(name);
+    }
+
+    @Override
+    public boolean existsAuthorByName(String name) {
+        return this.authorRepository.existsAuthorByName(name);
     }
 }

@@ -10,4 +10,5 @@ import java.util.UUID;
 public interface AuthorRepository extends CrudRepository<Author, UUID> {
     Author findAuthorByName(String name);
     Author findAuthorById(UUID id);
+    boolean existsAuthorByName(String name);
 }
