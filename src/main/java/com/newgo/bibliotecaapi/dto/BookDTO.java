@@ -28,7 +28,7 @@ public class BookDTO {
     private Integer pages;
     @NotBlank
     private String isbn13;
-    private Set<UUID> authors;
+    private Set<String> authors;
 
 
 }
