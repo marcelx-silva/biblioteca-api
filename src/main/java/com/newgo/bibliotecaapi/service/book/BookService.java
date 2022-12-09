@@ -11,4 +11,7 @@ public interface BookService {
     Set<Book> findAll();
     void deleteById(UUID id);
     Set<Book> findBooksByAuthorId(UUID id);
+    Book findBooksByTitle(String title);
+    boolean existsBookByTitle(String title);
+    boolean existsBookByIsbn13(String isbn13);
 }

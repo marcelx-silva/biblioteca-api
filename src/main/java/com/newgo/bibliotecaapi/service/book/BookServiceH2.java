@@ -1,5 +1,7 @@
 package com.newgo.bibliotecaapi.service.book;
 
+import com.newgo.bibliotecaapi.exceptions.AuthorNotFoundException;
+import com.newgo.bibliotecaapi.exceptions.BookAlreadyExistsException;
 import com.newgo.bibliotecaapi.model.author.Author;
 import com.newgo.bibliotecaapi.model.book.Book;
 import com.newgo.bibliotecaapi.repository.BookRepository;
@@ -22,11 +24,15 @@ public class BookServiceH2 implements BookService{
     }
     @Override
     public Book save(Book book) {
-        if(book.getAuthorSet().stream().allMatch(author ->  this.authorService.existsById(author.getId())) &&
+
+        if (existsBookByTitle(book.getTitle()) || existsBookByIsbn13(book.getIsbn13()))
+            throw new BookAlreadyExistsException();
+
+        if(book.getAuthorSet().stream().allMatch(author ->  this.authorService.existsAuthorByName(author.getName())) &&
                 book.getAuthorSet().size() > 0){
           return this.bookRepository.save(book);
         }
-        return null;
+        throw new AuthorNotFoundException();
     }
 
     @Override
@@ -51,5 +57,20 @@ public class BookServiceH2 implements BookService{
         Author author = this.authorService.findById(id);
         Set<Book> books = new HashSet<>(author.getBookSet());
         return books;
+    }
+
+    @Override
+    public Book findBooksByTitle(String title) {
+        return this.bookRepository.findBooksByTitle(title);
+    }
+
+    @Override
+    public boolean existsBookByTitle(String title) {
+        return this.bookRepository.existsBookByTitle(title);
+    }
+
+    @Override
+    public boolean existsBookByIsbn13(String isbn13) {
+        return this.bookRepository.existsBookByIsbn13(isbn13);
     }
 }
