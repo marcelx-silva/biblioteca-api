@@ -2,7 +2,7 @@ package com.newgo.bibliotecaapi.model.book;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.newgo.bibliotecaapi.model.author.Author;
-import com.newgo.bibliotecaapi.model.baseentity.BaseEntity;
+import com.newgo.bibliotecaapi.model.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
