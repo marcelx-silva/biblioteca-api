@@ -3,6 +3,10 @@ package com.newgo.bibliotecaapi.model.book;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.newgo.bibliotecaapi.model.author.Author;
 import com.newgo.bibliotecaapi.model.baseentity.BaseEntity;
+import com.newgo.bibliotecaapi.model.genre.Genre;
+import com.newgo.bibliotecaapi.model.language.Language;
+import com.newgo.bibliotecaapi.model.publisher.Publisher;
+import com.newgo.bibliotecaapi.model.valueObjects.ISBN;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,22 +23,35 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Book extends BaseEntity {
-    @Column(name = "title")
+
+    @Column(name = "title", nullable = false)
     private String title;
-    @Column(name = "genre")
-    private String genre;
-    @Column(name = "publisher")
-    private String publisher;
-    @Column(name = "language")
-    private String language;
-    @Column(name = "pages")
+
+    @ManyToOne
+    @JoinColumn(name = "publisher_id")
+    private Publisher publisher;
+
+    @ManyToOne
+    @JoinColumn(name = "language", nullable = false)
+    private Language language;
+
+    @Column(name = "pages", nullable = false)
     private Integer pages;
+
+    @Embedded
     @Column(name = "isbn_13", unique = true)
-    private String isbn13;
+    private ISBN isbn;
+
     @JsonBackReference(value = "authors_id")
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "authors_books",
-            joinColumns = {@JoinColumn(name="fk_book_id")},
-            inverseJoinColumns = {@JoinColumn(name = "fk_author_id")})
+    @JoinTable(name = "books_authors",
+            joinColumns = {@JoinColumn(name="book_id")},
+            inverseJoinColumns = {@JoinColumn(name = "author_id")})
     private Set<Author> authorSet = new HashSet<>();
+
+    @ManyToMany(targetEntity = Genre.class)
+    @JoinTable(name = "books_genres",
+            joinColumns = {@JoinColumn(name = "book_id")},
+            inverseJoinColumns = {@JoinColumn(name = "genre_id")})
+    private Set<Genre> genre;
 }
