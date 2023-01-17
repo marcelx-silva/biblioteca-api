@@ -2,11 +2,13 @@ package com.newgo.bibliotecaapi.model.book;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.newgo.bibliotecaapi.model.author.Author;
-import com.newgo.bibliotecaapi.model.baseentity.BaseEntity;
+
+
 import com.newgo.bibliotecaapi.model.genre.Genre;
 import com.newgo.bibliotecaapi.model.language.Language;
 import com.newgo.bibliotecaapi.model.publisher.Publisher;
 import com.newgo.bibliotecaapi.model.valueObjects.ISBN;
+import com.newgo.bibliotecaapi.model.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
